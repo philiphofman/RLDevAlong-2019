@@ -61,7 +61,7 @@ class GameMap: # Create new class called GameMap that on initialization creates 
 						self.create_v_tunnel(prev_y, new_y, new_x)
 					else:
 						# First move vertically, then horizontally
-						self.create_v_tunnel(prev_y, new_y, new_x)
+						self.create_v_tunnel(prev_y, new_y, prev_x)
 						self.create_h_tunnel(prev_x, new_x, new_y)
 				
 				# Finally, append the new room to the list
@@ -84,6 +84,8 @@ class GameMap: # Create new class called GameMap that on initialization creates 
 		for y in range(min(y1, y2), max(y1, y2) + 1): # For each tile in array within specified coordinates, plus one to actually breach the walls of a room
 			self.tiles[x][y].blocked = False # Make tile passable
 			self.tiles[x][y].block_sight = False # Make tile see-through
+			
+	def playce_entities(self, room, entities, max_monsters_per_room):
 		
 	def is_blocked(self, x, y): # Define function is_blocked that is passed x and y coordinates
 		if self.tiles[x][y].blocked: # If the tiles at the coordinates stored in your(self) list are blocked

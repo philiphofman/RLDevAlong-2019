@@ -11,3 +11,5 @@ class Tile: # Create a new class called Tile
 			block_sight = blocked # Then block_sight is set to blocked as default
 			
 		self.block_sight = block_sight # Set own block_sight variable to block_sight
+		
+		self.explored = False
