@@ -1,10 +1,11 @@
 import tcod as libtcod # Import tcod library
 
-from entity import Entity # Import Entity class from the entity.py script
+from entity import Entity, get_blocking_entities_at_location # Import Entity class from the entity.py script
 from input_handlers import handle_keys # Import a function (handle_keys) from the input_handlers.py script
 from map_objects.game_map import GameMap # Import GameMap class from game_map.py script in map_objects folder
 from render_functions import clear_all, render_all # Import functions from the render_functions.py script
 from fov_functions import initialize_fov, recompute_fov
+from game_states import GameStates
 
 
 def main():
@@ -22,6 +23,8 @@ def main():
 	fov_radius = 10
 	fov_recompute = True
 	
+	max_monsters_per_room = 3
+	
 	colors = { # Create new dictionary for colors
 		'dark_wall': libtcod.Color(0, 0, 100), # Don't forget commas between separate entries in a dictionary, even if they're above and below each other!
 		'dark_ground': libtcod.Color(50, 50, 150),
@@ -30,9 +33,8 @@ def main():
 	}
 	
 	
-	player = Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.white) # Define the player variable as a new entity with coordinates x, y, ASCII symbol, and color
-	npc = Entity(int(screen_width / 2 - 5), int(screen_height / 2), '@', libtcod.yellow) # Define the NPC variable as a new entity with coordinates x, y, ASCII symbol, and color
-	entities = [npc, player] # Create a list entities that holds all defined entities
+	player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True)
+	entities = [player]
 
 	libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD) # Set custom ASCII character PNG image to use
 
@@ -41,10 +43,12 @@ def main():
 	con = libtcod.console_new(screen_width, screen_height) # Create a new console that has the dimensions defined in screen_width and screen_height
 	
 	game_map = GameMap(map_width, map_height) # Create a new game map
-	game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player)
+	game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room)
 	
 	key = libtcod.Key() # Create variable to store keyboard input
 	mouse = libtcod.Mouse() # Create variable to store mouse input
+	
+	game_state = GameStates.PLAYERS_TURN
 
 	fov_map = initialize_fov(game_map)
 	
@@ -71,17 +75,34 @@ def main():
 		exit = action.get('exit') # Exit variable equals exit Dictionary
 		fullscreen = action.get('fullscreen') # Fullscreen variable equals fullscreen Dictionary
 		
-		if move: # If action contains the move dictionary
+		if move and game_state == GameStates.PLAYERS_TURN: # If action contains the move dictionary
 			dx, dy = move # Store move dictionary coordinates in dx and dy, respectively
-			if not game_map.is_blocked(player.x + dx, player.y + dy): # If the space the player is trying to enter is not flagged as "Blocked"
-				player.move(dx, dy) # Call the Entity move function and pass it the dx and dy coordinates
-				fov_recompute = True # The player moved, so we'll definitely need to recompute Field of Vision
+			destination_x = player.x + dx
+			destination_y = player.y + dy
+			
+			if not game_map.is_blocked(destination_x, destination_y): # If the space the player is trying to enter is not flagged as "Blocked"
+				target = get_blocking_entities_at_location(entities, destination_x, destination_y)
+				
+				if target:
+					print('You kick the ' + target.name + ' in the shins, much to its annoyance!')
+				else:
+					player.move(dx, dy) # Call the Entity move function and pass it the dx and dy coordinates
+					fov_recompute = True # The player moved, so we'll definitely need to recompute Field of Vision
+				
+				game_state = GameStates.ENEMY_TURN
 
 		if exit: # If action contains the exit dictionary
 			return True # Quit the game by returning True to the While game loop
 			
 		if fullscreen: # If action contains the fullscreen dictionary
 			libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen()) # Set game to fullscreen by making the set_fullscreen variable equal to the opposite of itself.
+			
+		if game_state == GameStates.ENEMY_TURN:
+			for entity in entities:
+				if entity != player:
+					print('The ' + entity.name + ' ponders the meaning of its existence.')
+					
+			game_state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':
