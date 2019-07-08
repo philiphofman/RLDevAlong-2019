@@ -1,15 +1,42 @@
-import tcod as libtcod # Import tcod library as libtcod
+import tcod as libtcod
 
 
 def initialize_fov(game_map): # Define function initialize_fov and pass it an arbitrary game_map
-	fov_map = libtcod.map_new(game_map.width, game_map.height) # Create a new map called fov_map that's the same size as the passed game_map variable
+	"""Creates a new map that stores sight-line info for FOV calculations.
 	
-	for y in range(game_map.height): # For each Y coordinate that's within our game_map height
-		for x in range(game_map.width): # And for each x coordinate within that y coordinate that's within our game_map width
-			libtcod.map_set_properties(fov_map, x, y, not game_map.tiles[x][y].block_sight, not game_map.tiles[x][y].blocked)
+	Creates a seperate map identical to the actual game map. Iterates
+	through each tile and sets whether it is transparent and blocks
+	movement.
+	
+	Args:
+		game_map: A tcod Map that is being used as the visible game map.
+		
+	Returns:
+		A new Map that contains FOV information about each tile,
+		specifically whether it's transparent (i.e. a floor) and
+		whether it blocks other stuff (i.e. a wall).
+	"""
+
+	fov_map = libtcod.map.Map(game_map.width, game_map.height)
+	
+	for y in range(game_map.height):
+		for x in range(game_map.width):
+			fov_map.transparent[y,x] = not game_map.tiles[x][y].block_sight
+			fov_map.walkable[y,x] = not game_map.tiles[x][y].blocked
 	
 	
-	return fov_map # Return this new fov libtcod map
+	return fov_map
 	
-def recompute_fov(fov_map, x, y, radius, light_walls=True, algorithm=0): # Define function recompute_fov, passing it an fov_map, perspective x and y coordinates, radius of vision, lighting up the walls, and what algorithm to use
-	libtcod.map_compute_fov(fov_map, x, y, radius, light_walls, algorithm) # Compute the FOV based on the parameters passed to recompute_fov
+def recompute_fov(fov_map, x, y, radius, light_walls=True, algorithm=0):
+	"""Recalculates the FOV.
+	
+	Args:
+		fov_map: A tcod Map being used for FOV calculations.
+		x: An integer x coordinate.
+		y: An integer y coordinate.
+		radius: An integer representing how far the player can see in tiles.
+		light_walls: A boolean that decides if visible obstacles will be returned.
+		algorithm: An integer that decides which FOV algorithm to run.
+	"""
+	
+	fov_map.compute_fov(x, y, radius, light_walls, algorithm)

@@ -1,26 +1,59 @@
 from random import randint
 import tcod as libtcod
 
-from entity import Entity
-from map_objects.tile import Tile # Import Tile class from Tile.py script in map_objects folder
-from map_objects.rectangle import Rect # Import Rect class from rectangle.py script in map_objects folder
+from components.ai import BasicMonster
+from components.fighter import Fighter
 
-class GameMap: # Create new class called GameMap that on initialization creates a 2D array of solid tiles of custom dimensions.
+from entity import Entity
+
+from map_objects.tile import Tile
+from map_objects.rectangle import Rect
+
+class GameMap:
 	"""GameMap handles creation of a random map by creating rooms, tunnels, and placing entities."""
 	
-	def __init__(self, width, height): # Initialization function, containing width and height.
-		"""__init__ creates a map of the passed width and height."""
+	def __init__(self, width, height):
+		"""__init__ creates a map of the passed width and height.
 		
-		self.width = width # Own width variable is equal to input width
-		self.height = height # Own height variable is equal to input height
-		self.tiles = self.initialize_tiles() # Tiles variable is equal to initialize_tiles function output
+		Args:
+			width: An integer defining the width of the map.
+			height: An integer defining the height of the map.
+		"""
+		
+		self.width = width
+		self.height = height
+		self.tiles = self.initialize_tiles()
 	
-	def initialize_tiles(self): # Define function initialize_tiles, that creates a 2D array of tiles of custom dimensions.
-		tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)] # Create 2D array that creates a Tile object for each y and x coordinate within defined width and height of game map.
-
-		return tiles # Return 2D array called tiles
+	def initialize_tiles(self):
+		"""Creates a 2D array of tiles with own width and height.
 		
-	def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room): # Define function make_map that takes a max amount of rooms, max and min room dimentions, map width and height, and player, and creates a random map with those parameters.
+		Returns:
+			A 2D array of tiles with the dimensions of the GameMap object.
+		"""
+		
+		tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
+
+		return tiles
+		
+	def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room):
+		"""Creates a a random map and populates it with monsters and the player.
+		
+		Starts by creating a random room somewhere in the map,
+		plopping the player in the center of it, then creating
+		new rooms, connecting them with tunnels, and spawning
+		monsters in them.
+		
+		Args:
+			max_rooms: An integer defining the max amount of rooms in this map.
+			room_min_size: An integer defining how small a room can be.
+			room_max_size: An integer defining how big a room can be.
+			map_width: An integer defining the width of the map.
+			map_height: An integer defining the height of a map.
+			player: An Entity object that represents the player.
+			entities: A list containing Entity objects.
+			max_monsters_per_room: An integer defining the max amount of
+				monsters to be spawned in one room.
+		"""
 		
 		rooms = []
 		num_rooms = 0
@@ -41,8 +74,6 @@ class GameMap: # Create new class called GameMap that on initialization creates 
 				if new_room.intersect(other_room):
 					break
 			else:
-				# This means there are no intersections, so this room is valid
-				
 				# "Paint" it to the map's tiles
 				self.create_room(new_room)
 				
@@ -58,9 +89,8 @@ class GameMap: # Create new class called GameMap that on initialization creates 
 					# Connect it to the previous room with a tunnel
 					
 					# Center coordinates of previous room
-					(prev_x, prev_y) = rooms[num_rooms - 1].center() # We subtract one because the list positions start at 0, not 1 (e.g. [0,1,2,3...] NOT [1,2,3,4...])
+					(prev_x, prev_y) = rooms[num_rooms - 1].center()
 					
-					# Flip a coin (random number that is either a 1 or a 0
 					if randint(0, 1) == 1:
 						# First move horizontally, then vertically
 						self.create_h_tunnel(prev_x, new_x, prev_y)
@@ -76,25 +106,51 @@ class GameMap: # Create new class called GameMap that on initialization creates 
 				rooms.append(new_room)
 				num_rooms += 1
 		
-	def create_room(self, room): # Define function create_room
-		# Go through the tiles in the rectangle, make them passable, and don't block sight.
-		for x in range(room.x1 + 1, room.x2): # For each tile in x array corresponding to coordinates x1 + 1 and x2
-			for y in range(room.y1 + 1, room.y2): # For each tile in y array corresponding to coordinates y1 + 1 and y2
-				self.tiles[x][y].blocked = False # Make the tile unblocked (i.e. able to be moved through)
-				self.tiles[x][y].block_sight = False # Make the tile not block line of sight
+	def create_room(self, room):
+		"""Goes through the tiles in the rectangle, makes them passable, and doesn't block sight.
+		
+		Args:
+			room: A Rect object representing the room.
+		"""
+		for x in range(room.x1 + 1, room.x2):
+			for y in range(room.y1 + 1, room.y2):
+				self.tiles[x][y].blocked = False
+				self.tiles[x][y].block_sight = False
 				
-	def create_h_tunnel(self, x1, x2, y): # Define funtion create_h_tunnel, which creates a horizontal tunnel
-		for x in range(min(x1, x2), max(x1, x2) + 1): # For each tile in array within specified coordinates, plus one to actually breach the walls of a room
-			self.tiles[x][y].blocked = False # Make tile passable
-			self.tiles[x][y].block_sight = False # Make tile see-through
+	def create_h_tunnel(self, x1, x2, y):
+		"""Creates a horizontal tunnel.
+		
+		Args:
+			x1: An integer representing the starting point.
+			x2: An integer representing the ending point.
+			y: An integer telling us which row to use.
+		"""
+		
+		for x in range(min(x1, x2), max(x1, x2) + 1):
+			self.tiles[x][y].blocked = False
+			self.tiles[x][y].block_sight = False
 			
-	def create_v_tunnel(self, y1, y2, x): # Define funtion create_v_tunnel, which creates a vertical tunnel
-		for y in range(min(y1, y2), max(y1, y2) + 1): # For each tile in array within specified coordinates, plus one to actually breach the walls of a room
-			self.tiles[x][y].blocked = False # Make tile passable
-			self.tiles[x][y].block_sight = False # Make tile see-through
+	def create_v_tunnel(self, y1, y2, x):
+		"""Creates a vertical tunnel.
+		
+		Args:
+			y1: An integer representing the starting point.
+			y2: An integer representing the ending point.
+			x: An integer telling us which column to use.
+		"""
+		for y in range(min(y1, y2), max(y1, y2) + 1):
+			self.tiles[x][y].blocked = False
+			self.tiles[x][y].block_sight = False
 			
 	def place_entities(self, room, entities, max_monsters_per_room):
-		# Get a random number of monsters
+		"""Get a random number of monsters.
+		
+		Args:
+			room: A Rect object that represents the room.
+			entities: A list of Entity objects.
+			max_monsters_per_room: An integer specifying the max number of
+				monsters to be spawned in this room.
+		"""
 		number_of_monsters = randint(0, max_monsters_per_room)
 		
 		for i in range(number_of_monsters):
@@ -102,16 +158,35 @@ class GameMap: # Create new class called GameMap that on initialization creates 
 			x = randint(room.x1 + 1, room.x2 - 1)
 			y = randint(room.y1 + 1, room.y2 - 1)
 			
+			# If nothing's there, create a monster.
 			if not any([entity for entity in entities if entity.x == x and entity.y == y]):
 				if randint(0, 100) < 80:
-					monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True)
+					fighter_component = Fighter(hp=10, defense=0, power=3)
+					ai_component = BasicMonster()
+					
+					monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True, fighter=fighter_component, ai=ai_component)
 				else:
-					monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True)
+					fighter_component = Fighter(hp=16, defense=1, power=4)
+					ai_component = BasicMonster()
+					
+					monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True, fighter=fighter_component, ai=ai_component)
 					
 				entities.append(monster)
 	
-	def is_blocked(self, x, y): # Define function is_blocked that is passed x and y coordinates
-		if self.tiles[x][y].blocked: # If the tiles at the coordinates stored in your(self) list are blocked
-			return True # Return true
+	def is_blocked(self, x, y):
+		"""Returns boolean about whether a tile is blocked.
 		
-		return False # Else return false
+		Args:
+			x: An integer representing the x coordinate.
+			y: An integer representing the y coordinate.
+		
+		Returns:
+			A boolean value describing whether the tile
+			specified in this object's 2D tile array
+			blocks movement.
+		"""
+		
+		if self.tiles[x][y].blocked:
+			return True
+		
+		return False

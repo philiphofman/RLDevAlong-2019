@@ -10,8 +10,11 @@ and assigned, but are not specified by the programmer as having any particular c
 can represent them arbitrarily. 
 """
 
-from enum import Enum, auto # Import Enum and the auto() helper function from Enum
+from enum import Enum, auto
 
-class GameStates(Enum): # Define class GameStates that gets passed Enum
+class GameStates(Enum):
+	"""Holds all the constants for the game."""
+	
 	PLAYERS_TURN = auto()
+	NPC_TURN = auto()
 	ENEMY_TURN = auto()
