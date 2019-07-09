@@ -19,6 +19,7 @@ No progress done on the actual tutorial, but I've been taking the time to finish
 
 My next step is to clean up the inline comments, finish adding all the docstrings, and then continue following the tutorial, adding documentation as I go.
 
-| UPDATE 7/6/2019 |
+
+| UPDATE 7/8/2019 |
 -
 Part 6 is complete! I have a couple of issues to track down before I move on; namely rendering order and being able to move after death. I've also caught up on docstrings and am now documenting as I go.
