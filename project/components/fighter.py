@@ -21,3 +21,47 @@ class Fighter:
 		self.hp = hp
 		self.defense = defense
 		self.power = power
+		
+		
+	def take_damage(self, amount):
+		"""Subtracts damage taken from HP.
+		
+		Args:
+			amount: An integer amount of HP to lose.
+			
+		Returns:
+			A list containing a dictionary that has
+			several different outcomes possible.
+		"""
+		
+		results = []
+		
+		self.hp -= amount
+		
+		if self.hp <= 0:
+			results.append({'dead': self.owner})
+			
+		return results
+		
+	def attack(self, target):
+		"""Calculates the damage to inflict upon an enemy.
+		
+		First calculates damage by subtracting target's defense
+		from your power. Then adds a message and damage to a list
+		called results, and returns the list.
+		
+		Args:
+			target: The Entity object being attacked.
+		"""
+		
+		results = []
+		
+		damage = self.power - target.fighter.defense
+		
+		if damage > 0:
+			results.append({'message': '{0} attacks {1} for {2} hit points.'.format(self.owner.name.capitalize(), target.name, str(damage))})
+			results.extend(target.fighter.take_damage(damage))
+		else:
+			results.append({'message': '{0} attacks {1} but does no damage.'.format(self.owner.name.capitalize(), target.name)})
+			
+		return results

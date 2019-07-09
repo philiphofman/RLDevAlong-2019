@@ -1,6 +1,7 @@
 import tcod as libtcod
-
 import math
+
+from render_functions import RenderOrder
 
 class Entity:
 	"""A generic object to represent players, enemies, items, etc.
@@ -12,11 +13,13 @@ class Entity:
 		color: A string with the color we want this Entity to be.
 		name: A string with the name we want this Entity to use.
 		blocks: A boolean indicating if this Entity blocks movement.
+		render_order: An Enum value indicating the rendering priority of this Entity.
+			Default is lowest priority, CORPSE.
 		fighter: A Fighter component object.
 		ai: An AI component object.
 	"""
 	
-	def __init__(self, x, y, char, color, name, blocks=False, fighter=None, ai=None):
+	def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None):
 		"""Inits Entity class with a couple of variables.
 		
 		See Entity class documentation.
@@ -29,6 +32,7 @@ class Entity:
 		self.color = color
 		self.name = name
 		self.blocks = blocks
+		self.render_order = render_order
 		self.fighter = fighter
 		self.ai = ai
 		
