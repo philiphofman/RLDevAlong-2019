@@ -18,3 +18,7 @@ I've finished the tutorial through Part 5, and nothing is broken! I didn't reall
 No progress done on the actual tutorial, but I've been taking the time to finish my inline comments and start figuring out how to add documentation as I go along. I've been reading some Python style guides and documentation guides, and my current method of inline commenting every single piece of code is apparently overzealous (I can see why). I've uploaded what I've done so far, but now my goal is to go through each file and add the proper Google docstrings so I can eventually build up some documentation via Sphinx. I won't be focusing too much on extensive documentation (oh, the irony) from now on but just the basics so I can get a sense of how Sphinx works.
 
 My next step is to clean up the inline comments, finish adding all the docstrings, and then continue following the tutorial, adding documentation as I go.
+
+| UPDATE 7/6/2019 |
+-
+Part 6 is complete! I have a couple of issues to track down before I move on; namely rendering order and being able to move after death. I've also caught up on docstrings and am now documenting as I go.
