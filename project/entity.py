@@ -22,7 +22,17 @@ class Entity:
 	def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None):
 		"""Inits Entity class with a couple of variables.
 		
-		See Entity class documentation.
+		Args:
+			x: An integer x coordinate.
+			y: An integer y coordinate.
+			char: A string with the ASCII character we want to represent this Entity with.
+			color: A string with the color we want this Entity to be.
+			name: A string with the name we want this Entity to use.
+			blocks: A boolean indicating if this Entity blocks movement.
+			render_order: An Enum value indicating the rendering priority of this Entity.
+				Default is lowest priority, CORPSE.
+			fighter: A Fighter component object.
+			ai: An AI component object.
 		"""
 		
 		# Set up all the initial variables and their values.

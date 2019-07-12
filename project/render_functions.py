@@ -13,6 +13,24 @@ class RenderOrder(Enum):
 	ACTOR = 3
 	
 
+def get_names_under_mouse(mouse, entities, fov_map):
+	"""Displayes names of entities under mouse pointer.
+	
+	Args:
+		entities: List of entities to check names of.
+		fov_map: tcod Map object used for calculating FOV.
+	"""
+	
+	(x, y) = (mouse.cx, mouse.cy)
+	
+	names = [entity.name for entity in entities
+					if entity.x == x and entity.y == y and libtcod.map_is_in_fov(fov_map, entity.x, entity.y)]
+	
+	names = ', '.join(names)
+	
+	return names.capitalize()
+	
+
 def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_color):
 	"""Renders a bar on the screen.
 	
@@ -41,7 +59,7 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
 	libtcod.console_print_ex(panel, int(x + total_width / 2), y, libtcod.BKGND_NONE, libtcod.CENTER, '{0}: {1}/{2}'.format(name, value, maximum))
 
 
-def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, screen_width, screen_height, bar_width, panel_height, panel_y, colors):
+def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, mouse, colors):
 	"""Draw everything that is currently visible to the player.
 	
 	Draws everything the player currently sees as well as explored
@@ -55,11 +73,13 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, s
 		game_map: The Map object used for the actual game.
 		fov_map: The Map object used to calculate FOV.
 		fov_recompute: A boolean value that indicates if we need to recalculate the FOV.
+		message_log: A Message Log object that holds game messages to be displayed.
 		screen_width: An integer indicating how wide the screen is.
 		screen_height: An integer indicating how tall the screen is.
 		bar_width: Integer actual width of bar.
 		panel_height: Integer height of panel Console.
 		panel_y: Integer position of bar on panel in the y-axis.
+		mouse: Mouse Event.
 		colors: A dictionary containing all the colors we can use in the game.
 	"""
 	
@@ -102,7 +122,17 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, s
 	libtcod.console_set_default_background(panel, libtcod.black)
 	libtcod.console_clear(panel)
 	
+	# Print the game messages, one line at a time
+	y = 1
+	for message in message_log.messages:
+		libtcod.console_set_default_foreground(panel, message.color)
+		libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
+		y += 1
+	
 	render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp, player.fighter.max_hp, libtcod.light_red, libtcod.darker_red)
+	
+	libtcod.console_set_default_foreground(panel, libtcod.light_gray)
+	libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, get_names_under_mouse(mouse, entities, fov_map))
 	
 	libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
 	
