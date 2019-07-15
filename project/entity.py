@@ -19,7 +19,7 @@ class Entity:
 		ai: An AI component object.
 	"""
 	
-	def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None):
+	def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None, item=None, inventory=None):
 		"""Inits Entity class with a couple of variables.
 		
 		Args:
@@ -33,6 +33,9 @@ class Entity:
 				Default is lowest priority, CORPSE.
 			fighter: A Fighter component object.
 			ai: An AI component object.
+			item: Item component object flagging if this entity is an Item.
+			inventory: Inventory component object giving this entitiy an
+				inventory.
 		"""
 		
 		# Set up all the initial variables and their values.
@@ -45,6 +48,8 @@ class Entity:
 		self.render_order = render_order
 		self.fighter = fighter
 		self.ai = ai
+		self.item = item
+		self.inventory = inventory
 		
 		
 		if self.fighter:
@@ -52,6 +57,12 @@ class Entity:
 			
 		if self.ai:
 			self.ai.owner = self
+			
+		if self.item:
+			self.item.owner = self
+			
+		if self.inventory:
+			self.inventory.owner = self
 		
 		
 	def move(self, dx, dy):

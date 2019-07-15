@@ -2,6 +2,10 @@ import tcod as libtcod
 
 from enum import Enum
 
+from game_states import GameStates
+
+from menus import inventory_menu
+
 
 # TODO: Test auto() to see if order will hold true, or if
 # manually assigned values are needed to ensure order integrity.
@@ -59,7 +63,7 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
 	libtcod.console_print_ex(panel, int(x + total_width / 2), y, libtcod.BKGND_NONE, libtcod.CENTER, '{0}: {1}/{2}'.format(name, value, maximum))
 
 
-def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, mouse, colors):
+def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, mouse, colors, game_state):
 	"""Draw everything that is currently visible to the player.
 	
 	Draws everything the player currently sees as well as explored
@@ -81,6 +85,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 		panel_y: Integer position of bar on panel in the y-axis.
 		mouse: Mouse Event.
 		colors: A dictionary containing all the colors we can use in the game.
+		game_state: A Enum representing the current game state.
 	"""
 	
 
@@ -118,6 +123,14 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 		
 		
 	libtcod.console_blit(con, 0, 0, screen_width, screen_height, 0, 0, 0) # Draw/combine stuff on screen ???
+	
+	if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+		if game_state == GameStates.SHOW_INVENTORY:
+			inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
+		else:
+			inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
+			
+		inventory_menu(con, inventory_title, player.inventory, 50, screen_width, screen_height)
 	
 	libtcod.console_set_default_background(panel, libtcod.black)
 	libtcod.console_clear(panel)
