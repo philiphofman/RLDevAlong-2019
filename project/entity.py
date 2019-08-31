@@ -109,6 +109,16 @@ class Entity:
 			self.move(dx, dy)
 			
 	
+	def distance(self, x, y):
+		"""Returns the distance between the Entity and an arbitrary point.
+		
+		Args:
+			x: Int x coordinate of arbitrary point.
+			y: Int y coordinate of arbitrary point.
+		"""
+		
+		return math.sqrt((x - self.x) ** 2 + (y - self.y) ** 2)
+	
 	def move_astar(self, target, entities, game_map):
 		"""Moves towards a target using the A* algorithm.
 		

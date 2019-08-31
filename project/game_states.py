@@ -16,8 +16,8 @@ class GameStates(Enum):
 	"""Holds all the constants for the game."""
 	
 	PLAYERS_TURN = auto()
-	NPC_TURN = auto()
 	ENEMY_TURN = auto()
 	PLAYER_DEAD = auto()
 	SHOW_INVENTORY = auto()
 	DROP_INVENTORY = auto()
+	TARGETING = auto()

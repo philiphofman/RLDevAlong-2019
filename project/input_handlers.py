@@ -20,18 +20,36 @@ def handle_keys(key, game_state):
 	elif game_state == GameStates.PLAYER_DEAD:
 		return handle_player_dead_keys(key)
 		
+	elif game_state == GameStates.TARGETING:
+		return handle_targeting_keys(key)
+		
 	elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
 		return handle_inventory_keys(key)
 	
 	return {}
+
+
+def handle_targeting_keys(key):
+	"""Handles key presses during targeting.
 	
+	Args:
+		key: An integer denoting a keycode (vk)
+		
+	Returns:
+		A dictionary key name.
+	"""
+
+	if key.vk == libtcod.KEY_ESCAPE:
+		return {'exit': True}
+		
+	return {}
+
 	
 def handle_inventory_keys(key):
 	"""Handles key presses in the inventory.
 	
 	Args:
 		key: An integer denoting a keycode (vk)
-		game_state: An Enum denoting what game state it is.
 		
 	Returns:
 		A dictionary key name.
@@ -127,5 +145,25 @@ def handle_player_dead_keys(key):
 	elif key.vk == libtcod.KEY_ESCAPE:
 		# Exit the menu
 		return {'exit': True}
+		
+	return {}
+	
+	
+def handle_mouse(mouse):
+	"""Returns which coordinates the left or right mouse button clicked on.
+	
+	Args:
+		mouse: tcod Mouse object.
+	
+	Returns:
+		A dictionary key name.
+	"""
+	
+	(x, y) = (mouse.cx, mouse.cy)
+	
+	if mouse.lbutton_pressed:
+		return {'left_click': (x, y)}
+	elif mouse.rbutton_pressed:
+		return {'right_click': (x, y)}
 		
 	return {}
