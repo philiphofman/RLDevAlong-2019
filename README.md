@@ -9,8 +9,7 @@ I'll mainly just be following the tutorial used by the DevAlong, but if inspirat
 
 | UPDATE 8/31/2019 |
 -
-Life has kept me very busy and I've fallen behind schedule. I had to hunt down an obscure bug which was wreaking havoc with my fireball targeting code; turns out it was an errant plus sign (i.e. targeting+cancelled instead of targeting_cancelled). I can see why an IDE that catches syntax errors is so useful. I'm uploading the finished half of Part 9, then continuing on to complete it.
-
+Finished Part 9! Life has kept me very busy and I've fallen behind schedule. I had to hunt down an obscure bug which was wreaking havoc with my fireball targeting code; turns out it was an errant plus sign (i.e. targeting+cancelled instead of targeting_cancelled). I can see why an IDE that catches syntax errors is so useful.
 
 | UPDATE 7/10/2019 |
 -
