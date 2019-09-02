@@ -13,7 +13,7 @@ can represent them arbitrarily.
 from enum import Enum, auto
 
 class GameStates(Enum):
-	"""Holds all the constants for the game."""
+	"""Defines all the different Game States in the game."""
 	
 	PLAYERS_TURN = auto()
 	ENEMY_TURN = auto()
