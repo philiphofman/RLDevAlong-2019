@@ -76,7 +76,21 @@ def main_menu(con, background_image, screen_width, screen_height):
 	libtcod.image_blit_2x(background_image, 0, 0, 0)
 	
 	libtcod.console_set_default_foreground(0, libtcod.light_yellow)
-	libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2) - 4, libtcod.BKGND_NONE, libtcod.CENTER, 'TOMBS OF THE ANCIENT KINGS')
-	libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER, 'By Azherbork')
+	libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2) - 4, libtcod.BKGND_NONE, libtcod.CENTER, 'Roguelike DevAlong 2019')
+	libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER, 'By Philip Hofman')
 	
 	menu(con, '', ['Play a new game', 'Continue last game', 'Quit'], 24, screen_width, screen_height)
+	
+	
+def message_box(con, header, width, screen_width, screen_height):
+	"""Displays a message box with a message.
+	
+	Args:
+		con: Console object to display message box on.
+		header: String title of the message box.
+		width: Integer width of message box.
+		screen_width: Integer width of screen.
+		screen_height: Integer height of screen.
+	"""
+	
+	menu(con, header, [], width, screen_width, screen_height)

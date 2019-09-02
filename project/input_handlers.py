@@ -167,3 +167,25 @@ def handle_mouse(mouse):
 		return {'right_click': (x, y)}
 		
 	return {}
+	
+	
+def handle_main_menu(key):
+	"""Handles key presses in the main menu.
+	
+	Args:
+		key: An integer denoting a keycode (VK)
+		
+	Returns:
+		A dictionary key name.
+	"""
+	
+	key_char = chr(key.c)
+	
+	if key_char == 'a':
+		return {'new_game': True}
+	elif key_char == 'b':
+		return {'load_game': True}
+	elif key_char == 'c' or key.vk == libtcod.KEY_ESCAPE:
+		return {'exit': True}
+		
+	return {}
