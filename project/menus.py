@@ -43,10 +43,40 @@ def menu(con, header, options, width, screen_width, screen_height):
 	
 	
 def inventory_menu(con, header, inventory, inventory_width, screen_width, screen_height):
-	# Show a menu with each item of the inventory as an option
+	"""Show a menu with each item of the inventory as an option.
+	
+	Args:
+		con: The Console object the menu is displayed on.
+		header: String title of the menu.
+		inventory: List of items.
+		inventory_width: Integer width of the inventory menu.
+		screen_width: Integer width of the screen.
+		screen_height: Integer height of the screen.
+	"""
+	
 	if len(inventory.items) == 0:
 		options = ['Inventory is empty.']
 	else:
 		options = [item.name for item in inventory.items]
 		
 	menu(con, header, options, inventory_width, screen_width, screen_height)
+	
+	
+	
+def main_menu(con, background_image, screen_width, screen_height):
+	"""Creates a main menu for the game.
+	
+	Args:
+		con: The Console object the menu is displayed on.
+		background_image: PNG image used for menu background.
+		screen_width: Integer width of screen.
+		screen_height: Integer height of screen.
+	"""
+	
+	libtcod.image_blit_2x(background_image, 0, 0, 0)
+	
+	libtcod.console_set_default_foreground(0, libtcod.light_yellow)
+	libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2) - 4, libtcod.BKGND_NONE, libtcod.CENTER, 'TOMBS OF THE ANCIENT KINGS')
+	libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER, 'By Azherbork')
+	
+	menu(con, '', ['Play a new game', 'Continue last game', 'Quit'], 24, screen_width, screen_height)
