@@ -7,13 +7,17 @@ Programming has mostly just been my hobby; I know a tiny bit of Java, C++, JavaS
 
 I'll mainly just be following the tutorial used by the DevAlong, but if inspiration strikes or I want to experiment then that'll happen too!
 
+| UPDATE 9/1/2019 |
+-
+Finished part 10! I was expecting some major bugs with the engine.py function rewrites, but aside from a few minor syntax errors it went smoothly. It's very rewarding to have a basic and functional game, if only with one level so far. I'm looking forward to finishing the tutorial.
+
 | UPDATE 8/31/2019 |
 -
 Finished Part 9! Life has kept me very busy and I've fallen behind schedule. I had to hunt down an obscure bug which was wreaking havoc with my fireball targeting code; turns out it was an errant plus sign (i.e. targeting+cancelled instead of targeting_cancelled). I can see why an IDE that catches syntax errors is so useful.
 
 | UPDATE 7/10/2019 |
 -
-Finished Part 6 and half of Part 7. My issues last update were caused by a syntax error and a missing Break statement. I've been discovering more and more features of Notepad++ that make development easier, like the Folder as Workspace window, document map, and styles! Switching to Obsidian and adjusting some of the colors really make it feel like a new dev program, and it's much easier on the eyes than blinding white. I'm really enjoying my workflow now; not working through an IDE like PyCharm is really helping me understand how everything actually fits and works together, which was one of my goals going into this DevAlong. My goal now is just to focus on finishing the tutorial, with a secondary goal being to update the code to get rid of all the deprecated functions being used. That will allow me to fiddle with the project on my own and gain a deeper understanding of tcod, which will hopefully lead to other improvements as I gain fluency in Python and these libraries. Exciting stuff!
+Finished half of Part 7. My issues last update were caused by a syntax error and a missing Break statement. I've been discovering more and more features of Notepad++ that make development easier, like the Folder as Workspace window, document map, and styles! Switching to Obsidian and adjusting some of the colors really make it feel like a new dev program, and it's much easier on the eyes than blinding white. I'm really enjoying my workflow now; not working through an IDE like PyCharm is really helping me understand how everything actually fits and works together, which was one of my goals going into this DevAlong. My goal now is just to focus on finishing the tutorial, with a secondary goal being to update the code to get rid of all the deprecated functions being used. That will allow me to fiddle with the project on my own and gain a deeper understanding of tcod, which will hopefully lead to other improvements as I gain fluency in Python and these libraries. Exciting stuff!
 
 
 | UPDATE 7/8/2019 |
