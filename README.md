@@ -7,7 +7,12 @@ Programming has mostly just been my hobby; I know a tiny bit of Java, C++, JavaS
 
 I'll mainly just be following the tutorial used by the DevAlong, but if inspiration strikes or I want to experiment then that'll happen too!
 
-| UPDATE 9/1/2019 |
+
+| UPDATE 9/5/2019 |
+-
+Almost there! Part 12 finished. PyCharm is really paying off.
+
+| UPDATE 9/5/2019 |
 -
 And Part 11 is in the bank! Everything went smoothly, thanks to my switch to the PyCharm IDE. I wanted to wait until this project was done to switch over, but PyCharm was just too handy! It's sped up the workflow considerably, and Notepad++ can go back to editing .ini files. I added one extra bit: the player heals 1 HP for every turn they wait. Simple, and we'll see how much it breaks the difficulty in Part 12.
 
