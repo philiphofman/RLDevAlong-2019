@@ -1,11 +1,15 @@
 # RLDevAlong-2019
 Reddit RoguelikeDevAlong 2019 - Python 3.7
 
-This repository is for the /r/RoguelikeDev 2019 DevAlong! I'm using Python 3.7.3 and Notepad++ for development, as well as Sphinx for documentation.
+This repository is for the /r/RoguelikeDev 2019 DevAlong! I'm using Python 3.7.3 and Notepad++/PyCharm for development, as well as Sphinx for documentation.
 
 Programming has mostly just been my hobby; I know a tiny bit of Java, C++, JavaScript, and GML (GameMaker Language). I've been wanting to learn Python for a while now, and this is the perfect opportunity to do that and create a genuine Roguelike, which is a genre I enjoy quite a bit. I'll also try to research and follow some best practices so I can start developing those habits for future projects.
 
 I'll mainly just be following the tutorial used by the DevAlong, but if inspiration strikes or I want to experiment then that'll happen too!
+
+| UPDATE 9/1/2019 |
+-
+And Part 11 is in the bank! Everything went smoothly, thanks to my switch to the PyCharm IDE. I wanted to wait until this project was done to switch over, but PyCharm was just too handy! It's sped up the workflow considerably, and Notepad++ can go back to editing .ini files. I added one extra bit: the player heals 1 HP for every turn they wait. Simple, and we'll see how much it breaks the difficulty in Part 12.
 
 | UPDATE 9/1/2019 |
 -
