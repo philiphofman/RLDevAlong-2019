@@ -12,19 +12,21 @@ This way of doing things is called composition, and it’s an alternative to you
 class Fighter:
 	"""A component class that holds information about combat."""
 	
-	def __init__(self, hp, defense, power):
+	def __init__(self, hp, defense, power, xp=0):
 		"""Inits some inital combat values.
 		
 		Args:
 			hp: An integer defining hit points.
 			defense: An integer defense value.
 			power: An integer power value.
+			xp: Integer value of xp gained when killing an enemy.
 		"""
 		
 		self.max_hp = hp
 		self.hp = hp
 		self.defense = defense
 		self.power = power
+		self.xp = xp
 	
 		
 		
@@ -44,7 +46,7 @@ class Fighter:
 		self.hp -= amount
 		
 		if self.hp <= 0:
-			results.append({'dead': self.owner})
+			results.append({'dead': self.owner, 'xp': self.xp})
 			
 		return results
 		

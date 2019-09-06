@@ -3,6 +3,7 @@ import math
 
 from render_functions import RenderOrder
 
+
 class Entity:
 	"""A generic object to represent players, enemies, items, etc.
 	
@@ -18,8 +19,9 @@ class Entity:
 		fighter: A Fighter component object.
 		ai: An AI component object.
 	"""
-	
-	def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None, item=None, inventory=None):
+
+	def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
+				item=None, inventory=None, stairs=None, level=None):
 		"""Inits Entity class with a couple of variables.
 		
 		Args:
@@ -34,10 +36,12 @@ class Entity:
 			fighter: A Fighter component object.
 			ai: An AI component object.
 			item: Item component object flagging if this entity is an Item.
-			inventory: Inventory component object giving this entitiy an
+			inventory: Inventory component object giving this entity an
 				inventory.
+			stairs: Stairs component object marking this entity as stairs.
+			level: Integer representing current Experience Level of player.
 		"""
-		
+
 		# Set up all the initial variables and their values.
 		self.x = x
 		self.y = y
@@ -50,21 +54,27 @@ class Entity:
 		self.ai = ai
 		self.item = item
 		self.inventory = inventory
-		
-		
+		self.stairs = stairs
+		self.level = level
+
 		if self.fighter:
 			self.fighter.owner = self
-			
+
 		if self.ai:
 			self.ai.owner = self
-			
+
 		if self.item:
 			self.item.owner = self
-			
+
 		if self.inventory:
 			self.inventory.owner = self
-		
-		
+
+		if self.stairs:
+			self.stairs.owner = self
+
+		if self.level:
+			self.level.owner = self
+
 	def move(self, dx, dy):
 		"""Moves this Entity by specified x & y amount.
 		
@@ -81,12 +91,11 @@ class Entity:
 			dx: An integer x coordinate.
 			dy: An integer y coordinate.
 		"""
-		
+
 		# Move the entity by a given amount.
 		self.x += dx
 		self.y += dy
-		
-	
+
 	def move_towards(self, target_x, target_y, game_map, entities):
 		"""Moves this Entity towards a given spot.
 		
@@ -96,19 +105,18 @@ class Entity:
 			game_map: A Map object that's being used for movement.
 			entities: A list of Entity objects.
 		"""
-		
+
 		dx = target_x - self.x
 		dy = target_y - self.y
 		distance = math.sqrt(dx ** 2 + dy ** 2)
-		
+
 		dx = int(round(dx / distance))
 		dy = int(round(dy / distance))
-		
+
 		if not (game_map.is_blocked(self.x + dx, self.y + dy) or
-					get_blocking_entities_at_location(entities, self.x + dx, self.y + dy)):
+				get_blocking_entities_at_location(entities, self.x + dx, self.y + dy)):
 			self.move(dx, dy)
-			
-	
+
 	def distance(self, x, y):
 		"""Returns the distance between the Entity and an arbitrary point.
 		
@@ -116,20 +124,20 @@ class Entity:
 			x: Int x coordinate of arbitrary point.
 			y: Int y coordinate of arbitrary point.
 		"""
-		
+
 		return math.sqrt((x - self.x) ** 2 + (y - self.y) ** 2)
-	
+
 	def move_astar(self, target, entities, game_map):
 		"""Moves towards a target using the A* algorithm.
 		
-		TODO: Refacor this function to use new tcod functions.
+		TODO: Refactor this function to use new tcod functions.
 		
 		Args:
 			target: The Entity object to plot a path to.
 			entities: A list of Entities.
 			game_map: The Map object used for displaying the game.
 		"""
-		
+
 		# Create a FOV map that has the dimensions of the map
 		fov = libtcod.map_new(game_map.width, game_map.height)
 
@@ -137,9 +145,8 @@ class Entity:
 		for y1 in range(game_map.height):
 			for x1 in range(game_map.width):
 				# libtcod.map_set_properties(fov, x1, y1, not game_map.tiles[x1][y1].block_sight, not game_map.tiles[x1][y1].blocked)
-				fov.transparent[y1,x1] = not game_map.tiles[x1][y1].block_sight
-				fov.walkable[y1,x1] = not game_map.tiles[x1][y1].blocked
-	
+				fov.transparent[y1, x1] = not game_map.tiles[x1][y1].block_sight
+				fov.walkable[y1, x1] = not game_map.tiles[x1][y1].blocked
 
 		# Scan all the objects to see if there are objects that must be navigated around
 		# Check also that the object isn't self or the target (so that the start and the end points are free)
@@ -173,21 +180,20 @@ class Entity:
 			# it will still try to move towards the player (closer to the corridor opening)
 			self.move_towards(target.x, target.y, game_map, entities)
 
-			# Delete the path to free memory
+		# Delete the path to free memory
 		libtcod.path_delete(my_path)
-			
-	
+
 	def distance_to(self, other):
 		"""Returns the integer distance to a particular Entity.
 		
 		Args:
 			other: The Entity object we want to measure distance to.
 		"""
-		
+
 		dx = other.x - self.x
 		dy = other.y - self.y
 		return math.sqrt(dx ** 2 + dy ** 2)
-		
+
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
 	"""Returns Entity, if any, that is blocking movement to specified coordinates.
@@ -205,10 +211,10 @@ def get_blocking_entities_at_location(entities, destination_x, destination_y):
 		that blocks movement. If no blocking Entity exists,
 		the function returns None.
 	"""
-	
+
 	# Check if there are any blocking entities in the specified coordinates.
 	for entity in entities:
 		if entity.blocks and entity.x == destination_x and entity.y == destination_y:
 			return entity
-			
+
 	return None
