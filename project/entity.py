@@ -1,6 +1,8 @@
 import tcod as libtcod
 import math
 
+from components.item import Item
+
 from render_functions import RenderOrder
 
 
@@ -16,12 +18,19 @@ class Entity:
 		blocks: A boolean indicating if this Entity blocks movement.
 		render_order: An Enum value indicating the rendering priority of this Entity.
 			Default is lowest priority, CORPSE.
-		fighter: A Fighter component object.
-		ai: An AI component object.
+		fighter: A Fighter component.
+		ai: An AI component.
+		item: Item component object flagging if this entity is an Item.
+		inventory: Inventory component object giving this entity an
+		inventory.
+		stairs: Stairs component object marking this entity as stairs.
+		level: Integer representing current Experience Level of player.
+		equipment: An Equipment object.
+		equippable: An Equippable component.
 	"""
 
 	def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
-				item=None, inventory=None, stairs=None, level=None):
+					item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
 		"""Inits Entity class with a couple of variables.
 		
 		Args:
@@ -40,6 +49,8 @@ class Entity:
 				inventory.
 			stairs: Stairs component object marking this entity as stairs.
 			level: Integer representing current Experience Level of player.
+			equipment: An Equipment object.
+			equippable: An Equippable component.
 		"""
 
 		# Set up all the initial variables and their values.
@@ -56,6 +67,8 @@ class Entity:
 		self.inventory = inventory
 		self.stairs = stairs
 		self.level = level
+		self.equipment = equipment
+		self.equippable = equippable
 
 		if self.fighter:
 			self.fighter.owner = self
@@ -74,6 +87,20 @@ class Entity:
 
 		if self.level:
 			self.level.owner = self
+
+		if self.equipment:
+			self.equipment.owner = self
+
+		if self.equippable:
+			self.equippable.owner = self
+
+			# If the entity is not an item but is equippable,
+			# then we turn it into an item because all
+			# equipment is also an item.
+			if not self.item:
+				item = Item()
+				self.item = item
+				self.item.owner = self
 
 	def move(self, dx, dy):
 		"""Moves this Entity by specified x & y amount.
