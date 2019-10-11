@@ -8,6 +8,10 @@ Programming has mostly just been my hobby; I know a tiny bit of Java, C++, JavaS
 I'll mainly just be following the tutorial used by the DevAlong, but if inspiration strikes or I want to experiment then that'll happen too!
 
 
+| UPDATE 10/9/2019 |
+-
+And it's finally finished! I've successfully followed the tutorial to the end, and nothing is broken. Along the way I've learned a lot about Python, IDE's, best practices, and more. There are a couple more things I want to do with this particular project: namely, I want to integrate Sphinx, as it didn't work before and I put off going down that rabbit hole until after finishing the project. I also want to rewrite the code to get rid of any deprecated functionality. It all still works, but this will give me a concrete end point (all files have been double-checked and converted) as well as more opportunities to poke around TCOD and gain a deeper understanding of the library.
+
 | UPDATE 9/5/2019 |
 -
 Almost there! Part 12 finished. PyCharm is really paying off.
