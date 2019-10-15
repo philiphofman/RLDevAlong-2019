@@ -4,110 +4,122 @@ from game_messages import Message
 
 
 class Inventory:
-	"""An Inventory class for dealing with various inventories.
-	
-	Attributes:
-		See init function.
-	"""
+    """An Inventory class for dealing with various inventories.
 
-	def __init__(self, capacity):
-		"""Inits some default values for an inventory.
-		
-		Inits the max capacity for the inventory and
-		sets up a blank list to hold items in.
-		
-		Args:
-			capacity: Integer amount of stuff the inventory can hold.
-		"""
+    Attributes:
+        See init function.
+    """
 
-		self.capacity = capacity
-		self.items = []
+    def __init__(self, capacity):
+        """Inits some default values for an inventory.
 
-	def add_item(self, item):
-		"""A function that puts an item in the inventory.
-		
-		Args:
-			item: The Item object to pick up.
-		"""
+        Inits the max capacity for the inventory and
+        sets up a blank list to hold items in.
 
-		results = []
+        Args:
+            capacity(int): Amount of stuff the inventory can hold.
+        """
 
-		if len(self.items) >= self.capacity:
-			results.append({
-				'item_added': None,
-				'message': Message('You cannot carry any more, your inventory is full.', libtcod.yellow)
-			})
+        self.capacity = capacity
+        self.items = []
 
-		else:
-			results.append({
-				'item_added': item,
-				'message': Message('You pick up the {0}!'.format(item.name), libtcod.light_blue)
-			})
+    def add_item(self, item):
+        """Puts an item in the inventory.
 
-			self.items.append(item)
+        Args:
+            item(Item): The item to add.
 
-		return results
+        Returns:
+            results(list): A list containing a dictionary with the
+                results of adding an item.
+        """
 
-	def use(self, item_entity, **kwargs):
-		"""Use an item.
-		
-		Args:
-			item_entity: Entity object using item. ???
-			**kwargs: Arguments for the function used.
-		"""
+        results = []
 
-		results = []
+        if len(self.items) >= self.capacity:
+            results.append({
+                'item_added': None,
+                'message': Message('You cannot carry any more, your inventory is full.', libtcod.yellow)
+            })
 
-		item_component = item_entity.item
+        else:
+            results.append({
+                'item_added': item,
+                'message': Message('You pick up the {0}!'.format(item.name), libtcod.light_blue)
+            })
 
-		if item_component.use_function is None:
-			equippable_component = item_entity.equippable
+            self.items.append(item)
 
-			if equippable_component:
-				results.append({'equip': item_entity})
-			else:
-				results.append({'message': Message('The {0} cannot be used.'.format(item_entity.name), libtcod.yellow)})
-		else:
-			if item_component.targeting and not (kwargs.get('target_x') or kwargs.get('target_y')):
-				results.append({'targeting': item_entity})
-			else:
-				kwargs = {**item_component.function_kwargs, **kwargs}
-				item_use_results = item_component.use_function(self.owner, **kwargs)
+        return results
 
-				for item_use_result in item_use_results:
-					if item_use_result.get('consumed'):
-						self.remove_item(item_entity)
+    def use(self, item_entity, **kwargs):
+        """Uses an item.
 
-				results.extend(item_use_results)
+        Args:
+            item_entity(Entity): The item to be used.
+            **kwargs: Arguments for the function used.
 
-		return results
+        Returns:
+            results(list): A list containing a dictionary with
+                the results of using the item.
+        """
 
-	def remove_item(self, item):
-		"""Remove an item from the inventory.
-		
-		Args:
-			item: Item to remove.
-		"""
+        results = []
 
-		self.items.remove(item)
+        item_component = item_entity.item
 
-	def drop_item(self, item):
-		"""Drops an item in the inventory onto the ground.
-		
-		Args:
-			item: Item to drop.
-		"""
+        if item_component.use_function is None:
+            equippable_component = item_entity.equippable
 
-		results = []
+            if equippable_component:
+                results.append({'equip': item_entity})
+            else:
+                results.append({'message': Message('The {0} cannot be used.'.format(item_entity.name), libtcod.yellow)})
+        else:
+            if item_component.targeting and not (kwargs.get('target_x') or kwargs.get('target_y')):
+                results.append({'targeting': item_entity})
+            else:
+                kwargs = {**item_component.function_kwargs, **kwargs}
+                item_use_results = item_component.use_function(self.owner, **kwargs)
 
-		if self.owner.equipment.main_hand == item or self.owner.equipment.off_hand == item:
-			self.owner.equipment.toggle_equip(item)
+                for item_use_result in item_use_results:
+                    if item_use_result.get('consumed'):
+                        self.remove_item(item_entity)
 
-		item.x = self.owner.x
-		item.y = self.owner.y
+                results.extend(item_use_results)
 
-		self.remove_item(item)
-		results.append(
-			{'item_dropped': item, 'message': Message('You dropped the {0}.'.format(item.name), libtcod.yellow)})
+        return results
 
-		return results
+    def remove_item(self, item):
+        """Removes an item from the inventory.
+
+        Args:
+            item(Item): Item to remove.
+        """
+
+        self.items.remove(item)
+
+    def drop_item(self, item):
+        """Drops an item in the inventory onto the ground.
+
+        Args:
+            item(Item): Item to drop.
+
+        Returns:
+            results(list): A list containing a dictionary with
+                the results of dropping an item on the ground.
+        """
+
+        results = []
+
+        if self.owner.equipment.main_hand == item or self.owner.equipment.off_hand == item:
+            self.owner.equipment.toggle_equip(item)
+
+        item.x = self.owner.x
+        item.y = self.owner.y
+
+        self.remove_item(item)
+        results.append(
+            {'item_dropped': item, 'message': Message('You dropped the {0}.'.format(item.name), libtcod.yellow)})
+
+        return results

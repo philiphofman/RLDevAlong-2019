@@ -12,14 +12,15 @@ can represent them arbitrarily.
 
 from enum import Enum, auto
 
+
 class GameStates(Enum):
-	"""Defines all the different Game States in the game."""
-	
-	PLAYERS_TURN = auto()
-	ENEMY_TURN = auto()
-	PLAYER_DEAD = auto()
-	SHOW_INVENTORY = auto()
-	DROP_INVENTORY = auto()
-	TARGETING = auto()
-	LEVEL_UP = auto()
-	CHARACTER_SCREEN = auto()
+    """Defines all the different Game States in the game with Enums."""
+
+    PLAYERS_TURN = auto()
+    ENEMY_TURN = auto()
+    PLAYER_DEAD = auto()
+    SHOW_INVENTORY = auto()
+    DROP_INVENTORY = auto()
+    TARGETING = auto()
+    LEVEL_UP = auto()
+    CHARACTER_SCREEN = auto()

@@ -11,112 +11,118 @@ This way of doing things is called composition, and it’s an alternative to you
 
 
 class Fighter:
-	"""A component class that holds information about combat."""
+    """A component class that holds information about combat."""
 
-	def __init__(self, hp, defense, power, xp=0):
-		"""Inits some inital combat values.
-		
-		Args:
-			hp: An integer defining hit points.
-			defense: An integer defense value.
-			power: An integer power value.
-			xp: Integer value of xp gained when killing an enemy.
-		"""
+    def __init__(self, hp, defense, power, xp=0):
+        """Inits some inital combat values.
 
-		self.base_max_hp = hp
-		self.hp = hp
-		self.base_defense = defense
-		self.base_power = power
-		self.xp = xp
+        Args:
+            hp(int): This Entity's max HP.
+            defense(int): This Entity's Defense.
+            power(int): This Entity's Power.
+            xp(int): Amount of XP gained for killing this Entity.
+        """
 
-	@property
-	def max_hp(self):
-		"""Returns total of base max HP and any bonuses from equipment."""
+        self.base_max_hp = hp
+        self.hp = hp
+        self.base_defense = defense
+        self.base_power = power
+        self.xp = xp
 
-		if self.owner and self.owner.equipment:
-			bonus = self.owner.equipment.max_hp_bonus
-		else:
-			bonus = 0
+    @property
+    def max_hp(self):
+        """Returns total of base max HP and any bonuses from equipment."""
 
-		return self.base_max_hp + bonus
+        if self.owner and self.owner.equipment:
+            bonus = self.owner.equipment.max_hp_bonus
+        else:
+            bonus = 0
 
-	@property
-	def power(self):
-		"""Returns total of base power and any bonuses from equipment."""
+        return self.base_max_hp + bonus
 
-		if self.owner and self.owner.equipment:
-			bonus = self.owner.equipment.power_bonus
-		else:
-			bonus = 0
+    @property
+    def power(self):
+        """Returns total of base power and any bonuses from equipment."""
 
-		return self.base_power + bonus
+        if self.owner and self.owner.equipment:
+            bonus = self.owner.equipment.power_bonus
+        else:
+            bonus = 0
 
-	@property
-	def defense(self):
-		"""Returns total of base defense and any bonuses from equipment."""
+        return self.base_power + bonus
 
-		if self.owner and self.owner.equipment:
-			bonus = self.owner.equipment.defense_bonus
-		else:
-			bonus = 0
+    @property
+    def defense(self):
+        """Returns total of base defense and any bonuses from equipment."""
 
-		return self.base_defense + bonus
+        if self.owner and self.owner.equipment:
+            bonus = self.owner.equipment.defense_bonus
+        else:
+            bonus = 0
 
-	def take_damage(self, amount):
-		"""Subtracts damage taken from HP.
-		
-		Args:
-			amount: An integer amount of HP to lose.
-			
-		Returns:
-			A list containing a dictionary that has
-			several different outcomes possible.
-		"""
+        return self.base_defense + bonus
 
-		results = []
+    def take_damage(self, amount):
+        """Subtracts damage taken from HP and handles death.
 
-		self.hp -= amount
+        If this Entity's HP drops to or below 0, it appends a
+        dictionary with its name and XP amount to the results list.
 
-		if self.hp <= 0:
-			results.append({'dead': self.owner, 'xp': self.xp})
+        Args:
+            amount(int): Amount of HP to lose.
 
-		return results
+        Returns:
+            results(list): A list containing a dictionary that has
+            several different outcomes possible.
+        """
 
-	def heal(self, amount):
-		"""Increase HP by specified integer amount.
-		
-		Args:
-			amount: Int amount to heal.
-		"""
+        results = []
 
-		self.hp += amount
+        self.hp -= amount
 
-		if self.hp > self.max_hp:
-			self.hp = self.max_hp
+        if self.hp <= 0:
+            results.append({'dead': self.owner, 'xp': self.xp})
 
-	def attack(self, target):
-		"""Calculates the damage to inflict upon an enemy.
-		
-		First calculates damage by subtracting target's defense
-		from your power. Then adds a message and damage to a list
-		called results, and returns the list.
-		
-		Args:
-			target: The Entity object being attacked.
-		"""
+        return results
 
-		results = []
+    def heal(self, amount):
+        """Increase HP by specified amount. Cannot heal above max HP.
 
-		damage = self.power - target.fighter.defense
+        Args:
+            amount(int): Amount of HP to heal.
+        """
 
-		if damage > 0:
-			results.append({'message': Message(
-				'{0} attacks {1} for {2} hit points.'.format(self.owner.name.capitalize(), target.name, str(damage)),
-				libtcod.white)})
-			results.extend(target.fighter.take_damage(damage))
-		else:
-			results.append({'message': Message(
-				'{0} attacks {1} but does no damage.'.format(self.owner.name.capitalize(), target.name),
-				libtcod.white)})
+        self.hp += amount
 
-		return results
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp
+
+    def attack(self, target):
+        """Calculates the damage to inflict upon an enemy.
+
+        First calculates damage by subtracting target's defense
+        from this Entity's power. Then adds a message and damage to a list
+        called results, and returns the list.
+
+        Args:
+            target(Entity): The character being attacked.
+
+        Returns:
+            results(list): A list with a message for the in-game log.
+        """
+
+        results = []
+
+        damage = self.power - target.fighter.defense
+
+        if damage > 0:
+            results.append({'message': Message(
+                '{0} attacks {1} for {2} hit points.'.format(self.owner.name.capitalize(), target.name, str(damage)),
+                libtcod.white)})
+            results.extend(target.fighter.take_damage(damage))
+        else:
+            results.append({'message': Message(
+                '{0} attacks {1} but does no damage.'.format(self.owner.name.capitalize(), target.name),
+                libtcod.white)})
+
+        return results
