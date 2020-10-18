@@ -1,3 +1,5 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 class Stairs:
     """Marks something to act as stairs."""
 

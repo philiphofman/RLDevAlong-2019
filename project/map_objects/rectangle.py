@@ -1,14 +1,16 @@
 """
 Coordinate system starts at top right corner of map. Going right increases x, going down increases y:
 
-				0 1 2 3 4
-				1 . . . .
-				2 . . . .
-				3 . . . .
-				4 . . . .
+                0 1 2 3 4
+                1 . . . .
+                2 . . . .
+                3 . . . .
+                4 . . . .
 
 """
 
+
+#  Coded by Philip Hofman, Copyright (c) 2020.
 
 class Rect:
     """A helper class for working with rectangles."""

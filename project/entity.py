@@ -1,9 +1,9 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
 import math
-
-from components.item import Item
-
-from render_functions import RenderOrder
+from project.components.item import Item
+from project.render_functions import RenderOrder
 
 
 class Entity:

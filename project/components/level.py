@@ -1,3 +1,5 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 class Level:
     """Defines player's leveling experience and functions."""
 

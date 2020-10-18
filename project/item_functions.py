@@ -1,8 +1,8 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
-
-from game_messages import Message
-
-from components.ai import ConfusedMonster
+from project.game_messages import Message
+from project.components.ai import ConfusedMonster
 
 
 def heal(*args, **kwargs):

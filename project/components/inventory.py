@@ -1,6 +1,8 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
 
-from game_messages import Message
+from project.game_messages import Message
 
 
 class Inventory:
@@ -57,7 +59,7 @@ class Inventory:
 
         Args:
             item_entity(Entity): The item to be used.
-            **kwargs: Arguments for the function used.
+            **kwargs: Any arguments needed for the item to be used.
 
         Returns:
             results(list): A list containing a dictionary with

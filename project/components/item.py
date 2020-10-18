@@ -1,3 +1,5 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 class Item:
     """An item class that denotes what can be picked up."""
 

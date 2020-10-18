@@ -1,4 +1,6 @@
-from equipment_slots import EquipmentSlots
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
+from project.equipment_slots import EquipmentSlots
 
 
 class Equipment:
@@ -62,15 +64,15 @@ class Equipment:
         return bonus
 
     def toggle_equip(self, equippable_entity):
-        """Equips and dequips equipment.
+        """Equips and unequips equipment.
 
         If the item's not equipped, it'll be equipped,
         removing any items already in its slot. If the
         equipment is already equipped, the function assumes
-        it's trying to be dequipped and will do so, leaving
+        it's trying to be unequipped and will do so, leaving
         nothing behind in the equipment slot. It returns a
         dictionary stating which Item was equipped or
-        dequipped.
+        unequipped.
 
         Args:
             equippable_entity(Entity): Entity to be equipped.
@@ -86,10 +88,10 @@ class Equipment:
         if slot == EquipmentSlots.MAIN_HAND:
             if self.main_hand == equippable_entity:
                 self.main_hand = None
-                results.append({'dequipped': equippable_entity})
+                results.append({'unequipped': equippable_entity})
             else:
                 if self.main_hand:
-                    results.append({'dequipped': self.main_hand})
+                    results.append({'unequipped': self.main_hand})
 
                 self.main_hand = equippable_entity
                 results.append({'equipped': equippable_entity})
@@ -97,10 +99,10 @@ class Equipment:
         elif slot == EquipmentSlots.OFF_HAND:
             if self.off_hand == equippable_entity:
                 self.off_hand = None
-                results.append({'dequipped': equippable_entity})
+                results.append({'unequipped': equippable_entity})
             else:
                 if self.off_hand:
-                    results.append({'dequipped': self.off_hand})
+                    results.append({'unequipped': self.off_hand})
 
                 self.off_hand = equippable_entity
                 results.append({'equipped': equippable_entity})

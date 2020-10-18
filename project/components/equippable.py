@@ -1,3 +1,5 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 class Equippable:
     """Component class defining stuff for equippable items.
 

@@ -2,11 +2,13 @@
 This is where all of our different monster AIs go.
 """
 
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
 
 from random import randint
 
-from game_messages import Message
+from project.game_messages import Message
 
 
 class BasicMonster:

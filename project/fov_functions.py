@@ -1,3 +1,5 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
 
 

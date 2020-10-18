@@ -1,5 +1,6 @@
-import tcod as libtcod
+#  Coded by Philip Hofman, Copyright (c) 2020.
 
+import tcod as libtcod
 import textwrap
 
 
@@ -8,7 +9,7 @@ class Message:
 
 
     Attributes:
-        text(str): String of message text.
+        text(str): Message contents.
         color(TCOD.color): Color of message.
     """
 
@@ -16,7 +17,7 @@ class Message:
         """Inits some message values.
 
         Args:
-            text(str): String containing text of message.
+            text(str): Message contents.
             color(TCOD.color): tcod Color of message.
         """
 
@@ -28,12 +29,12 @@ class MessageLog:
     """Log for messages."""
 
     def __init__(self, x, width, height):
-        """Inits some values for message log.
+        """Inits some values for a message log.
 
         Args:
             x(int): x coordinate.
             width(int): Width.
-            height(int): Height.
+            height(int): Height of log in text lines.
         """
 
         self.messages = []

@@ -1,16 +1,16 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
-
-from loader_functions.initialize_new_game import get_constants, get_game_variables
-from loader_functions.data_loaders import load_game, save_game
-
-from game_messages import Message
-from death_functions import kill_monster, kill_player
-from entity import get_blocking_entities_at_location
-from input_handlers import handle_keys, handle_mouse, handle_main_menu
-from render_functions import clear_all, render_all
-from fov_functions import initialize_fov, recompute_fov
-from game_states import GameStates
-from menus import main_menu, message_box
+from project.loader_functions.initialize_new_game import get_constants, get_game_variables
+from project.loader_functions.data_loaders import load_game, save_game
+from project.game_messages import Message
+from project.death_functions import kill_monster, kill_player
+from project.entity import get_blocking_entities_at_location
+from project.input_handlers import handle_keys, handle_mouse, handle_main_menu
+from project.render_functions import clear_all, render_all
+from project.fov_functions import initialize_fov, recompute_fov
+from project.game_states import GameStates
+from project.menus import main_menu, message_box
 
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
@@ -241,7 +241,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
                 for equip_results in equip_results:
                     equipped = equip_results.get('equipped')
-                    dequipped = equip_results.get('dequipped')
+                    dequipped = equip_results.get('unequipped')
 
                     if equipped:
                         message_log.add_message(Message('You equip the {0}'.format(equipped.name)))
@@ -289,7 +289,7 @@ def main():
     constants = get_constants()
 
     # Sets custom ASCII character PNG image to use.
-    libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_set_custom_font('dejavu10x10_gs_tc.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
 
     # Creates the window, window size, window title, and sets fullscreen.
     libtcod.console_init_root(constants['screen_width'], constants['screen_height'], constants['window_title'], False)

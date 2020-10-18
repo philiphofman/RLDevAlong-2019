@@ -1,6 +1,7 @@
-import tcod as libtcod
+#  Coded by Philip Hofman, Copyright (c) 2020.
 
-from game_states import GameStates
+import tcod as libtcod
+from project.game_states import GameStates
 
 
 def handle_keys(key, game_state):
@@ -90,23 +91,23 @@ def handle_player_turn_keys(key):
     # TODO: Replace with tcod.event. Check if Event code is complete first.
     key_char = chr(key.c)
 
-    if key.vk == libtcod.KEY_UP or key_char == 'h':
+    if key.vk == libtcod.KEY_UP or key.vk == libtcod.KEY_KP8:
         return {'move': (0, -1)}
-    elif key.vk == libtcod.KEY_DOWN or key_char == 'j':
+    elif key.vk == libtcod.KEY_DOWN or key.vk == libtcod.KEY_KP2:
         return {'move': (0, 1)}
-    elif key.vk == libtcod.KEY_LEFT or key_char == 'k':
+    elif key.vk == libtcod.KEY_LEFT or key.vk == libtcod.KEY_KP4:
         return {'move': (-1, 0)}
-    elif key.vk == libtcod.KEY_RIGHT or key_char == 'l':
+    elif key.vk == libtcod.KEY_RIGHT or key.vk == libtcod.KEY_KP6:
         return {'move': (1, 0)}
-    elif key_char == 'y':
+    elif key.vk == libtcod.KEY_KP7:
         return {'move': (-1, -1)}
-    elif key_char == 'u':
+    elif key.vk == libtcod.KEY_KP9:
         return {'move': (1, -1)}
-    elif key_char == 'b':
+    elif key.vk == libtcod.KEY_KP1:
         return {'move': (-1, 1)}
-    elif key_char == 'n':
+    elif key.vk == libtcod.KEY_KP3:
         return {'move': (1, 1)}
-    elif key_char == 'z':
+    elif key.vk == libtcod.KEY_KP5 or key_char == 'z':
         return {'wait': True}
 
     elif key_char == 'g':
@@ -117,8 +118,8 @@ def handle_player_turn_keys(key):
 
     elif key_char == 'd':
         return {'drop_inventory': True}
-    # TODO: Fix code to let '>' work instead of Enter.
-    elif key.vk == libtcod.KEY_ENTER:
+
+    elif key_char == '.' and libtcod.KEY_SHIFT:
         return {'take_stairs': True}
 
     elif key_char == 'c':

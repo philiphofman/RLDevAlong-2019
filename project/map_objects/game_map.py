@@ -1,21 +1,23 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 from random import randint
 import tcod as libtcod
 
-from entity import Entity
-from game_messages import Message
-from render_functions import RenderOrder
-from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
-from random_utils import random_choice_from_dict, from_dungeon_level
+from project.entity import Entity
+from project.game_messages import Message
+from project.render_functions import RenderOrder
+from project.item_functions import heal, cast_lightning, cast_fireball, cast_confuse
+from project.random_utils import random_choice_from_dict, from_dungeon_level
 
-from components.ai import BasicMonster
-from components.fighter import Fighter
-from components.item import Item
-from components.stairs import Stairs
-from components.equipment import EquipmentSlots
-from components.equippable import Equippable
+from project.components.ai import BasicMonster
+from project.components.fighter import Fighter
+from project.components.item import Item
+from project.components.stairs import Stairs
+from project.components.equipment import EquipmentSlots
+from project.components.equippable import Equippable
 
-from map_objects.tile import Tile
-from map_objects.rectangle import Rect
+from project.map_objects.tile import Tile
+from project.map_objects.rectangle import Rect
 
 
 class GameMap:

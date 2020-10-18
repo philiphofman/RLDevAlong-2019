@@ -10,6 +10,8 @@ and assigned, but are not specified by the programmer as having any particular c
 can represent them arbitrarily. 
 """
 
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 from enum import Enum, auto
 
 

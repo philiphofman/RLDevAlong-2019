@@ -1,6 +1,8 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
 
-from game_messages import Message
+from project.game_messages import Message
 
 """
 In order to make “killable” Entities, rather than attaching hit points to each Entity we create, we’ll create a component,

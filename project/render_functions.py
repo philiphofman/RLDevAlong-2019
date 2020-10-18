@@ -1,10 +1,9 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
-
 from enum import Enum, auto
-
-from game_states import GameStates
-
-from menus import character_screen, inventory_menu, level_up_menu
+from project.game_states import GameStates
+from project.menus import character_screen, inventory_menu, level_up_menu
 
 
 class RenderOrder(Enum):

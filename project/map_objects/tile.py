@@ -3,6 +3,8 @@ A tile on a map. It may or may not be blocked, and may or may not block sight.
 """
 
 
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 class Tile:
     """This is the Tile class. It tells you if it's blocked, blocks sight, or explored."""
 

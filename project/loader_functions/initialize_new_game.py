@@ -1,22 +1,24 @@
+#  Coded by Philip Hofman, Copyright (c) 2020.
+
 import tcod as libtcod
 
-from components.fighter import Fighter
-from components.inventory import Inventory
-from components.level import Level
-from components.equipment import Equipment
-from components.equippable import Equippable
+from project.components.fighter import Fighter
+from project.components.inventory import Inventory
+from project.components.level import Level
+from project.components.equipment import Equipment
+from project.components.equippable import Equippable
 
-from equipment_slots import EquipmentSlots
+from project.equipment_slots import EquipmentSlots
 
-from entity import Entity
+from project.entity import Entity
 
-from game_messages import MessageLog
+from project.game_messages import MessageLog
 
-from game_states import GameStates
+from project.game_states import GameStates
 
-from map_objects.game_map import GameMap
+from project.map_objects.game_map import GameMap
 
-from render_functions import RenderOrder
+from project.render_functions import RenderOrder
 
 
 def get_constants():

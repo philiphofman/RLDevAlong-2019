@@ -1,8 +1,9 @@
-import tcod as libtcod
+#  Coded by Philip Hofman, Copyright (c) 2020.
 
-from game_messages import Message
-from game_states import GameStates
-from render_functions import RenderOrder
+import tcod as libtcod
+from project.game_messages import Message
+from project.game_states import GameStates
+from project.render_functions import RenderOrder
 
 
 def kill_player(player):
